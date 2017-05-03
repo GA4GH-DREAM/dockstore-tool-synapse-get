@@ -2,28 +2,23 @@
 set -euf -o pipefail
 
 # parse inputs and build command args
-CMD_ARGS=('synapse' 'get')
-while getopts "c:i:q:h" ARG; do
+CMD_ARGS=('synapse')
+while getopts "c:ri:q:h" ARG; do
     case "$ARG" in
-    	c ) CONFIG=$OPTARG;;
+        c ) CONFIG=$OPTARG; CMD_ARGS=("${CMD_ARGS[@]}" '--c' $CONFIG 'get');;
+        r ) CMD_ARGS=("${CMD_ARGS[@]}" '-r');;
         i ) ENTITY_ID=$OPTARG; CMD_ARGS=("${CMD_ARGS[@]}" $ENTITY_ID);;
-		q ) QUERY=$OPTARG; CMD_ARGS=("${CMD_ARGS[@]}" '-q' '"'$QUERY'"');;
+        q ) QUERY=$OPTARG; CMD_ARGS=("${CMD_ARGS[@]}" '-q' '"'$QUERY'"');;
         h ) usage; exit 0;;
         * ) usage; exit 1;;
     esac
 done
 shift $(($OPTIND - 1))
 
-# parse credentials from config file
-CREDENTIALS=($(python /usr/local/bin/parse_config.py ${CONFIG}))
-
 # create temp folder to store files; add to command args
 SYN_DIR="synapse_files"
 mkdir $SYN_DIR
 CMD_ARGS=("${CMD_ARGS[@]}" '--downloadLocation' $SYN_DIR)
-
-# log in to Synapse
-synapse login -u ${CREDENTIALS[0]} -p ${CREDENTIALS[1]} --rememberMe
 
 # get file from Synapse
 COMMAND=$( IFS=' '; echo "${CMD_ARGS[*]}" );
