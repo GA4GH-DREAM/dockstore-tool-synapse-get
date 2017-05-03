@@ -17,7 +17,7 @@ dct:creator:
 
 requirements:
 - class: DockerRequirement
-  dockerPull: quay.io/jaeddy/dockstore-tool-synapse-get:1.6.2.dev--1
+  dockerPull: quay.io/ga4gh-dream/dockstore-tool-synapse-get:1.6.2.dev--2
 
 inputs:
   config_file:
@@ -26,16 +26,22 @@ inputs:
       position: 1
       prefix: -c
 
+  recursive:
+    type: boolean
+    inputBinding:
+      position: 2
+      prefix: -r
+
   synapse_id:
     type: string?
     inputBinding:
-      position: 2
+      position: 3
       prefix: -i
 
   query:
     type: string?
     inputBinding:
-      position: 3
+      position: 4
       prefix: -q
 
 outputs:
