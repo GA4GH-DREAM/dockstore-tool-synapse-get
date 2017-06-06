@@ -46,9 +46,7 @@ inputs:
 
 outputs:
   output:
-    type:
-      type: array
-      items: File
+    type: Any
     outputBinding:
       glob: "synapse_files/*"
 
