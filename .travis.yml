@@ -1,0 +1,17 @@
+sudo: required
+
+env:
+  - VERSION="1.6.2.dev--2"
+
+services:
+  - docker
+
+before_install:
+  - docker build -t quay.io/ga4gh-dream/dockstore-tool-synapse-get:${VERSION} .
+  - pip2.7 install --user setuptools==28.8.0
+
+install:
+  - pip2.7 install --user cwl-runner cwltool==1.0.20170217172322 schema-salad==2.2.20170222151604 avro==1.8.1
+
+script:
+  - cwltool --non-strict Dockstore.cwl test_id.cwl.json
