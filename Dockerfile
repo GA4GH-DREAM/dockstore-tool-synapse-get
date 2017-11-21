@@ -7,9 +7,9 @@ FROM ubuntu:16.04
 
 # Metadata
 LABEL base.image="ubuntu:16.04"
-LABEL version="2"
+LABEL version="1"
 LABEL software="synapseclient"
-LABEL software.version="1.6.2.dev"
+LABEL software.version="1.7.2"
 LABEL description="Programmatic interface to Synapse services for Python"
 LABEL website="https://github.com/Sage-Bionetworks/synapsePythonClient"
 LABEL documentation="https://github.com/Sage-Bionetworks/synapsePythonClient"
@@ -20,9 +20,8 @@ LABEL tags="General"
 MAINTAINER James Eddy <james.a.eddy@gmail.com>
 
 # set version here to minimize need for edits below
-# ENV VERSION=v1.6.2
-ENV BRANCH=develop
-ENV VERSION=6ba6a3ebde81fe8ed4d0c231ab42c613aa03334f
+ENV VERSION=v1.7.2
+ENV BRANCH=master
 
 # set up packages
 USER root
@@ -35,7 +34,7 @@ RUN apt-get update && \
 RUN git clone -b ${BRANCH} git://github.com/Sage-Bionetworks/synapsePythonClient.git && \
     cd synapsePythonClient && \
     git checkout ${VERSION} && \
-    python setup.py develop
+    python setup.py install
 
 COPY bin/synapse_get /usr/local/bin/
 RUN chmod a+x /usr/local/bin/synapse_get
